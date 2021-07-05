@@ -29,7 +29,7 @@ public class ConverterSexo implements Converter {
 				break;
 			}
 			default:
-				throw new IllegalArgumentException("Error en el switch: sexo:" + sexo);
+				throw new IllegalArgumentException("Error en el switch: sexo:" + value.toString());
 			}
 		}
 		return sexo;

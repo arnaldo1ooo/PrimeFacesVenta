@@ -12,15 +12,12 @@
 	<ui:composition template="WEB-INF/templates/plantilla.xhtml">
 
 		<ui:define name="content">
+				<f:event listener="#{personaBean.listar(false)}" type="preRenderView"></f:event>
 			<p:growl id="msj" showDetail="true"></p:growl>
 
 			<h:form id="frm1">
 				<p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();"
-					actionListener="#{personaBean.setAccion('Registrar')}" onclick="#{personaBean.limpiar()}" update=":dlgDatos">
-				</p:commandButton>
-
-				<p:commandButton value="Listar"
-					actionListener="#{personaBean.listar()}" update="datatable">
+					actionListener="#{personaBean.setAccion('Registrar')}" update=":dlgDatos">
 				</p:commandButton>
 
 

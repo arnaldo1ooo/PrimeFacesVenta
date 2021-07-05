@@ -3,6 +3,9 @@ package bean;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import dao.PersonaDAO;
 import dao.ProductoDAO;
 import model.Producto;
 
@@ -40,11 +43,19 @@ public class ProductoBean {
 	}
 
 	// Metodos
-	public void listar() throws Exception {
+	public void listar(boolean updateVistaTabla) throws Exception {
 		ProductoDAO dao;
 		try {
-			dao = new ProductoDAO();
-			lstProductos = dao.listar();
+			if (!updateVistaTabla) {
+				if (!isPostBack()) {
+					dao = new ProductoDAO();
+					lstProductos = dao.listar();
+				}
+			} else { //Update tabla despues de abm
+				dao = new ProductoDAO();
+				lstProductos = dao.listar();
+			}
+
 		} catch (Exception e) {
 			throw e;
 		}
@@ -93,7 +104,7 @@ public class ProductoBean {
 		try {
 			dao = new ProductoDAO();
 			dao.registrar(producto);
-			this.listar();
+			this.listar(true);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -104,7 +115,7 @@ public class ProductoBean {
 		try {
 			dao = new ProductoDAO();
 			dao.modificar(producto);
-			this.listar();
+			this.listar(true);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -116,7 +127,7 @@ public class ProductoBean {
 		try {
 			dao = new ProductoDAO();
 			dao.eliminarID(per);
-			this.listar();
+			this.listar(true);
 
 		} catch (Exception e) {
 			throw e;
@@ -127,8 +138,9 @@ public class ProductoBean {
 		this.producto.setCodigo(0);
 		this.producto.setNombre("");
 		this.producto.setPrecio(0);
-		
-		System.out.println("Se limpio campos");
-		
+	}
+	
+	private boolean isPostBack() { //Si la peticion es a la misma pagina postback=true
+		return FacesContext.getCurrentInstance().isPostback();
 	}
 }

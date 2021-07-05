@@ -3,6 +3,8 @@ package bean;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
 import dao.PersonaDAO;
 import model.Persona;
 
@@ -40,17 +42,18 @@ public class PersonaBean {
 	}
 
 	// Metodos
-	public void listar() throws Exception {
-		System.out.println("Se ejecuto Metodo Listar");
+	public void listar(boolean updateVistaTabla) throws Exception {
 		PersonaDAO dao;
 		try {
-			dao = new PersonaDAO();
-			lstPersonas = dao.listar();
-
-			/*
-			 * // Imprimir Personas for (Persona i : lstPersonas) {
-			 * System.out.println("Nombre " + i.getNombre() + "    Sexo " + i.getSexo()); }
-			 */
+			if (!updateVistaTabla) {
+				if (!isPostBack()) {
+					dao = new PersonaDAO();
+					lstPersonas = dao.listar();
+				}
+			} else { //Update tabla despues de abm
+				dao = new PersonaDAO();
+				lstPersonas = dao.listar();
+			}
 
 		} catch (Exception e) {
 			throw e;
@@ -59,7 +62,6 @@ public class PersonaBean {
 	}
 
 	public void leerID(Persona per) throws Exception {
-		System.out.println("Se ejecuto Metodo LeerID");
 		PersonaDAO dao;
 		Persona temp;
 
@@ -80,7 +82,7 @@ public class PersonaBean {
 
 	public void operar() throws Exception {
 		switch (accion) {
-		
+
 		case "Registrar":
 			this.registrar();
 			this.limpiar();
@@ -97,49 +99,47 @@ public class PersonaBean {
 	}
 
 	private void registrar() throws Exception {
-		System.out.println("Se ejecuto Metodo Registrar");
 		PersonaDAO dao;
 		try {
 			dao = new PersonaDAO();
 			dao.registrar(persona);
-			this.listar();
+			this.listar(true);
 		} catch (Exception e) {
 			throw e;
 		}
 	}
 
 	private void modificar() throws Exception {
-		System.out.println("Se ejecuto Metodo Modificar");
 		PersonaDAO dao;
 		try {
 			dao = new PersonaDAO();
 			dao.modificar(persona);
-			this.listar();
+			this.listar(true);
 		} catch (Exception e) {
 			throw e;
 		}
 	}
 
 	public void eliminarID(Persona per) throws Exception {
-		System.out.println("Se ejecuto Metodo EliminarID");
 		PersonaDAO dao;
 
 		try {
 			dao = new PersonaDAO();
 			dao.eliminarID(per);
-			this.listar();
+			this.listar(true);
 
 		} catch (Exception e) {
 			throw e;
 		}
 	}
-	
+
 	public void limpiar() {
 		this.persona.setCodigo(0);
 		this.persona.setNombre("");
 		this.persona.setSexo("");
-		
-		System.out.println("Se limpio campos");
-		
+	}
+
+	private boolean isPostBack() { // Si la peticion es a la misma pagina postback=true
+		return FacesContext.getCurrentInstance().isPostback();
 	}
 }
