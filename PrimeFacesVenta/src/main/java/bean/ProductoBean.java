@@ -6,19 +6,20 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import dao.PersonaDAO;
-import model.Persona;
+import dao.ProductoDAO;
+import model.Producto;
 
 @ManagedBean
 @ViewScoped
-public class PersonaBean {
+public class ProductoBean {
 	// Inicializar variables
-	private Persona persona = new Persona();
-	private List<Persona> lstPersonas;
+	private Producto producto = new Producto();
+	private List<Producto> lstProductos;
 	private String accion;
 
 	// Getters y Setters
-	public Persona getPersona() {
-		return persona;
+	public Producto getProducto() {
+		return producto;
 	}
 
 	public String getAccion() {
@@ -29,30 +30,30 @@ public class PersonaBean {
 		this.accion = accion;
 	}
 
-	public void setPersona(Persona persona) {
-		this.persona = persona;
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
 
-	public List<Persona> getLstPersonas() {
-		return lstPersonas;
+	public List<Producto> getLstProductos() {
+		return lstProductos;
 	}
 
-	public void setLstPersonas(List<Persona> lstPersonas) {
-		this.lstPersonas = lstPersonas;
+	public void setLstProductos(List<Producto> lstProductos) {
+		this.lstProductos = lstProductos;
 	}
 
 	// Metodos
 	public void listar(boolean updateVistaTabla) throws Exception {
-		PersonaDAO dao;
+		ProductoDAO dao;
 		try {
 			if (!updateVistaTabla) {
 				if (!isPostBack()) {
-					dao = new PersonaDAO();
-					lstPersonas = dao.listar();
+					dao = new ProductoDAO();
+					lstProductos = dao.listar();
 				}
 			} else { //Update tabla despues de abm
-				dao = new PersonaDAO();
-				lstPersonas = dao.listar();
+				dao = new ProductoDAO();
+				lstProductos = dao.listar();
 			}
 
 		} catch (Exception e) {
@@ -61,17 +62,17 @@ public class PersonaBean {
 
 	}
 
-	public void leerID(Persona per) throws Exception {
-		PersonaDAO dao;
-		Persona temp;
+	public void leerID(Producto per) throws Exception {
+		ProductoDAO dao;
+		Producto temp;
 
 		try {
-			dao = new PersonaDAO();
+			dao = new ProductoDAO();
 			dao.leerID(per);
 			temp = dao.leerID(per);
 
 			if (temp != null) {
-				this.persona = temp;
+				this.producto = temp;
 				this.accion = "Modificar";
 			}
 
@@ -82,7 +83,7 @@ public class PersonaBean {
 
 	public void operar() throws Exception {
 		switch (accion) {
-
+		
 		case "Registrar":
 			this.registrar();
 			this.limpiar();
@@ -99,10 +100,10 @@ public class PersonaBean {
 	}
 
 	private void registrar() throws Exception {
-		PersonaDAO dao;
+		ProductoDAO dao;
 		try {
-			dao = new PersonaDAO();
-			dao.registrar(persona);
+			dao = new ProductoDAO();
+			dao.registrar(producto);
 			this.listar(true);
 		} catch (Exception e) {
 			throw e;
@@ -110,21 +111,21 @@ public class PersonaBean {
 	}
 
 	private void modificar() throws Exception {
-		PersonaDAO dao;
+		ProductoDAO dao;
 		try {
-			dao = new PersonaDAO();
-			dao.modificar(persona);
+			dao = new ProductoDAO();
+			dao.modificar(producto);
 			this.listar(true);
 		} catch (Exception e) {
 			throw e;
 		}
 	}
 
-	public void eliminarID(Persona per) throws Exception {
-		PersonaDAO dao;
+	public void eliminarID(Producto per) throws Exception {
+		ProductoDAO dao;
 
 		try {
-			dao = new PersonaDAO();
+			dao = new ProductoDAO();
 			dao.eliminarID(per);
 			this.listar(true);
 
@@ -132,14 +133,14 @@ public class PersonaBean {
 			throw e;
 		}
 	}
-
+	
 	public void limpiar() {
-		this.persona.setCodigo(0);
-		this.persona.setNombre("");
-		this.persona.setSexo("");
+		this.producto.setCodigo(0);
+		this.producto.setNombre("");
+		this.producto.setPrecio(0);
 	}
-
-	private boolean isPostBack() { // Si la peticion es a la misma pagina postback=true
+	
+	private boolean isPostBack() { //Si la peticion es a la misma pagina postback=true
 		return FacesContext.getCurrentInstance().isPostback();
 	}
 }

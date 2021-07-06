@@ -12,38 +12,38 @@
 	<ui:composition template="WEB-INF/templates/plantilla.xhtml">
 
 		<ui:define name="content">
-				<f:event listener="#{personaBean.listar(false)}" type="preRenderView"></f:event>
+		<f:event listener="#{productoBean.listar(false)}" type="preRenderView"></f:event>
+		
 			<p:growl id="msj" showDetail="true"></p:growl>
 
 			<h:form id="frm1">
 				<p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();"
-					actionListener="#{personaBean.setAccion('Registrar')}" update=":dlgDatos">
+					actionListener="#{productoBean.setAccion('Registrar')}" update=":dlgDatos">
 				</p:commandButton>
 
-
-				<p:dataTable id="datatable" value="#{personaBean.lstPersonas}"
-					var="persona">
+				<p:dataTable id="datatable" value="#{productoBean.lstProductos}"
+					var="producto">
 
 					<p:column headerText="Nombre">
-						<p:outputLabel value="#{persona.nombre}"></p:outputLabel>
+						<p:outputLabel value="#{producto.nombre}"></p:outputLabel>
 					</p:column>
 
-					<p:column headerText="Sexo">
-						<p:outputLabel value="#{persona.sexo}">
-							<f:converter converterId="converterSexo"></f:converter>
+					<p:column headerText="Precio">
+						<p:outputLabel value="#{producto.precio}">
+							<f:convertNumber type="currency" currencySymbol="Gs" minFractionDigits="0" pattern="Gs ###,###.##"/>
 						</p:outputLabel>
 					</p:column>
 
 					<p:column headerText="Modificar">
 						<p:commandLink value="Modificar registro"
-							actionListener="#{personaBean.leerID(persona)}"
+							actionListener="#{productoBean.leerID(producto)}"
 							oncomplete="PF('wdlgDatos').show();" update=":dlgDatos">
 						</p:commandLink>
 					</p:column>
 
 					<p:column headerText="Eliminar">
 						<p:commandLink value="Eliminar registro"
-							actionListener="#{personaBean.eliminarID(persona)}"
+							actionListener="#{productoBean.eliminarID(producto)}"
 							update="datatable">
 						</p:commandLink>
 					</p:column>
@@ -56,16 +56,13 @@
 			<p:dialog id="dlgDatos" header="Datos" widgetVar="wdlgDatos">
 				<h:form id="frm2">
 					<p:outputLabel value="Nombre"></p:outputLabel>
-					<p:inputText value="#{personaBean.persona.nombre}"></p:inputText>
+					<p:inputText value="#{productoBean.producto.nombre}"></p:inputText>
 
-					<p:outputLabel value="Sexo"></p:outputLabel>
-					<p:selectOneMenu value="#{personaBean.persona.sexo}">
-						<f:selectItem itemLabel="MASCULINO" itemValue="M"></f:selectItem>
-						<f:selectItem itemLabel="FEMENINO" itemValue="F"></f:selectItem>
-					</p:selectOneMenu>
+					<p:outputLabel value="Precio"></p:outputLabel>
+					<p:inputText value="#{productoBean.producto.precio}"></p:inputText>
 
-					<p:commandButton value="#{personaBean.accion}"
-						actionListener="#{personaBean.operar()}"
+					<p:commandButton value="#{productoBean.accion}"
+						actionListener="#{productoBean.operar()}"
 						oncomplete="PF('wdlgDatos').hide();" update=":frm1:datatable">
 					</p:commandButton>
 
