@@ -10,7 +10,7 @@ public class Venta {
 	private Persona persona;
 	private double monto;
 	
-	
+		
 	//Getters y Setters
 	public int getCodigo() {
 		return codigo;

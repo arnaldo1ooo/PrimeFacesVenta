@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+<body>
+
+	<ui:composition template="WEB-INF/templates/plantilla.xhtml">
+
+		<ui:define name="content">
+
+			<f:event listener="#{personaBean.listar(false)}" type="preRenderView"></f:event>
+			<f:event listener="#{productoBean.listar(false)}"
+				type="preRenderView"></f:event>
+			
+			<h:form>
+				<p:outputLabel value="Persona"></p:outputLabel>
+				<p:selectOneMenu value="#{ventaBean.venta.persona}"
+					converter="omnifaces.SelectItemsConverter">
+					<f:selectItem noSelectionOption="true" itemLabel="Seleccione"
+						itemValue="#{null}" />
+					<f:selectItems value="#{personaBean.lstPersonas}" var="per"
+						itemLabel="#{per.nombre}" itemValue="#{per}"></f:selectItems>
+				</p:selectOneMenu>
+
+				<p:selectOneMenu value="#{ventaBean.producto}"
+					converter="omnifaces.SelectItemsConverter">
+					<f:selectItem noSelectionOption="true" itemLabel="Seleccione"
+						itemValue="#{null}" />
+					<f:selectItems value="#{productoBean.lstProductos}" var="prod"
+						itemLabel="#{prod.nombre}" itemValue="#{prod}"></f:selectItems>
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Cantidad"></p:outputLabel>
+				<p:inputText value="#{ventaBean.cantidad}"></p:inputText>
+
+
+				<p:commandButton value="Agregar"
+					actionListener="#{ventaBean.agregar()}" update="tabledetalle"></p:commandButton>
+			</h:form>
+
+
+			<p:dataTable id="tabledetalle" value="#{ventaBean.lista}" var="det" 
+					paginator="true" 
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                    currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                    rowsPerPageTemplate="5,10,15">
+				<p:column headerText="Nombre Producto">
+					<p:outputLabel value="#{det.producto.nombre}"></p:outputLabel>
+				</p:column>
+				<p:column headerText="Precio">
+					<p:outputLabel value="#{det.producto.precio}"></p:outputLabel>
+				</p:column>
+				<p:column headerText="Cantidad">
+					<p:outputLabel value="#{det.cantidad}"></p:outputLabel>
+				</p:column>
+			</p:dataTable>
+
+			<p:commandButton value="Registrar"></p:commandButton>
+
+		</ui:define>
+	</ui:composition>
+
+</body>
+</html>
