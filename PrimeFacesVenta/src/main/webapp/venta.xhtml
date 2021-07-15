@@ -45,12 +45,11 @@
 					actionListener="#{ventaBean.agregar()}" update="tabledetalle"></p:commandButton>
 			</h:form>
 
-
-			<p:dataTable id="tabledetalle" value="#{ventaBean.lista}" var="det" rows="10"
-                     paginator="true"
-                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                     rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+			<p:dataTable id="tabledetalle" value="#{ventaBean.lista}" var="det" row="10"
+					paginator="true" 
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                    currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                    rowsPerPageTemplate="5,10,15">
 				<p:column headerText="Nombre Producto">
 					<p:outputLabel value="#{det.producto.nombre}"></p:outputLabel>
 				</p:column>
